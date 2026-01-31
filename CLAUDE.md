@@ -110,6 +110,35 @@ Each demo follows the same structure:
 - **JPEGDEC** - Software JPEG fallback
 - **ESP32-audioI2S 3.0.12** - MP3 decoding and I2S output
 
+## LVGL 8.x Coding Rules
+
+**IMPORTANT:** This project uses LVGL 8.x. Do NOT use LVGL 7.x patterns.
+
+**Events (obligatoire) :**
+```c
+// Correct - LVGL 8.x event callback
+lv_obj_add_event_cb(btn, event_handler, LV_EVENT_CLICKED, NULL);
+
+static void event_handler(lv_event_t *e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+    if (code == LV_EVENT_CLICKED) {
+        // Handle click
+    }
+}
+```
+
+```c
+// WRONG - LVGL 7.x (won't compile)
+lv_btn_set_action(btn, LV_BTN_ACTION_CLICK, callback);  // Does not exist
+lv_btn_get_state(btn);  // Does not exist
+```
+
+**Other LVGL 8.x changes:**
+- Use `lv_obj_set_style_*()` instead of `lv_style_set_*()`
+- Use `lv_obj_add_style()` instead of `lv_obj_set_style()`
+- Screens: `lv_scr_act()` returns active screen, `lv_scr_load()` to switch
+
 ## Reference Documentation
 
 - User manual: `6-User_Manual/Getting started JC3248W535 .pdf`
